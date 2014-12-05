@@ -1,0 +1,14 @@
+{application, doapie,
+  [
+    {description, "DigitalOcean public API wrapper for Erlang"},
+    {vsn, "0.0.1"},
+    {registered, []},
+    {applications, [
+      kernel,
+      stdlib,
+      ssl,
+      ibrowse,
+      jsx
+    ]},
+    {env, []}
+  ]}.
