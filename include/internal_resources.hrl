@@ -11,3 +11,5 @@
 -define(HEADER_CONTENT_TYPE, {"Content-Type", "application/json"}).
 -define(HEADER_AUTH, "Authorization").
 -define(HEADER_AUTH_BEARER, "Bearer ").
+
+-define(MAX_PER_PAGE, 25).
