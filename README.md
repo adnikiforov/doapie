@@ -41,6 +41,30 @@ doapie:get_account().
 So, now it's not ready for real use, but you can include it in your application, if you want.
 All you need is add ```application:ensure_all_started(doapie).``` into your ```start/n``` function and ```-include("api_objects.hrl").``` if you want to receive records instead of tuples from API requests.
 
+### Implemented
+```erlang
+%% Get account info
+-spec get_account() -> maybe_error(account()).
+
+%% Get all account actions (by pages, max 25 items per page)
+-spec get_actions_list(non_neg_integer(), non_neg_integer()) -> maybe_error(actions_list()).
+
+%% Get action by id
+-spec get_action(non_neg_integer()) -> maybe_error(action()).
+
+%% Get all domains
+-spec get_domains_list(non_neg_integer(), non_neg_integer()) -> maybe_error(domains_list()).
+
+%% Get domain by id
+-spec get_domain(non_neg_integer()) -> maybe_error(domain()).
+
+%% Create domain by name and ip address
+-spec create_domain(nonempty_string(), nonempty_string()) -> maybe_error(domain()).
+
+%% Delete domain by id
+-spec delete_domain(non_neg_integer()) -> maybe_error(limits()).
+```
+
 ### Many thanks
  - @cmullaparthi [cmullaparthi/ibrowse](https://github.com/cmullaparthi/ibrowse.git)
  - @talentdeficit [talentdeficit/jsx](https://github.com/talentdeficit/jsx.git)
