@@ -8,7 +8,8 @@
 %%%-------------------------------------------------------------------
 -author("a.d.nikiforov@gmail.com").
 
--export_type([account/0, limits/0, action/0, error/0]).
+-export_type([account/0, action/0, actions_list/0]).
+-export_type([limits/0, error/0]).
 
 -record(limits, {
   limit :: non_neg_integer(),
@@ -44,3 +45,9 @@
   limits :: limits()
 }).
 -type action() :: #action{}.
+
+-record(actions_list, {
+  actions :: list(action()),
+  limits :: limits()
+}).
+-type actions_list() :: #actions_list{}.
