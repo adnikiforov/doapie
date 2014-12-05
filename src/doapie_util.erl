@@ -12,7 +12,7 @@
 -include("internal_resources.hrl").
 
 %% API
--export([make_request/2]).
+-export([make_request/2, render_api_action/2]).
 
 %% Build request headers - Content-Type and Auth header using get_token/0
 -spec build_headers() -> list().
@@ -33,7 +33,7 @@ get_token() ->
   end.
 
 %% Make request using predefined api action tuple and convert it using converter
--spec make_request({nonempty_string(), 'get'|'post'|'put'|'delete', list()}, atom()) -> term().
+-spec make_request({nonempty_string(), http_methods(), list()}, atom()) -> term().
 make_request(ApiAction, Converter) ->
   {Url, Action, Data} = ApiAction,
   case Data of
@@ -49,10 +49,30 @@ make_request(ApiAction, Converter) ->
         {Int, _R} when is_integer(Int), Int >= 200, Int < 300 ->
           erlang:apply(Converter, convert, [Body, Headers]);
         {Int, _R} when is_integer(Int) ->
-          lager:error("Error code ~p ~p", [Int, Body]), error;
+          lager:error("Error code ~p ~p", [Int, Body]),
+          erlang:apply(error_converter, convert, [Body]);
         {error, Reason} ->
           lager:error("Error ~p", [Reason]), error
       end;
     {_, _Code, _Headers, Body} ->
       lager:error("Error ~p", [Body]), error
+  end.
+
+-spec render_api_action({string(), http_methods(), list()}, list()) -> {string(), http_methods(), list()}.
+render_api_action({Url, Method, ActionData}, Data) ->
+  {render_url(Url, Data), Method, ActionData}.
+
+render_url(Url, Data) when Data == [] ->
+  Url;
+render_url(Url, Data) ->
+  [{Key, Value} | T] = Data,
+  StringedKey = string:to_upper(atom_to_list(Key)),
+  render_url(re:replace(Url, "{" ++ StringedKey ++ "}", any_to_string(Value), [global, {return, list}]), T).
+
+-spec any_to_string(integer() | atom() | string()) -> string().
+any_to_string(Value) ->
+  case Value of
+    Value when is_integer(Value) -> integer_to_list(Value);
+    Value when is_atom(Value) -> atom_to_list(Value);
+    Value -> Value
   end.

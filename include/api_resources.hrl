@@ -12,9 +12,9 @@
 -define(DO_ACCOUNT_INFO, {"https://api.digitalocean.com/v2/account", get, []}).
 
 %% %% Actions
-%% -define(DO_ACTIONS_LIST, "https://api.digitalocean.com/v2/actions").
-%% -define(DO_ACTION, "https://api.digitalocean.com/v2/actions/{ACTION_ID}").
-%%
+-define(DO_ACTIONS_LIST, {"https://api.digitalocean.com/v2/actions", get, []}).
+-define(DO_ACTION, {"https://api.digitalocean.com/v2/actions/{ACTION_ID}", get, []}).
+
 %% %% Domains
 %% -define(DO_DOMAINS_LIST, "https://api.digitalocean.com/v2/domains").
 %% -define(DO_DOMAIN, "https://api.digitalocean.com/v2/domains/{DOMAIN_ID}").
