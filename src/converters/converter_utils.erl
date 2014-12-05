@@ -11,7 +11,7 @@
 
 -include("api_objects.hrl").
 
--export([parse_limits/1, decode/1]).
+-export([parse_limits/1, decode/1, convert_list/3]).
 
 -spec parse_limits(list({nonempty_string(), nonempty_string()})) -> limits().
 parse_limits(Headers) ->
@@ -44,3 +44,12 @@ try_convert_to_int(String) ->
     {Int, _} when is_integer(Int) -> Int;
     {error, _} -> String
   end.
+
+convert_list(Actions, Converter, Headers) ->
+  convert_list(Actions, Converter, Headers, []).
+
+convert_list(Actions, Converter, Headers, Accum) when Actions == [] ->
+  erlang:apply(Converter, convert_list, [Accum, Headers]);
+
+convert_list([H | T], Converter, Headers, Accum) ->
+  convert_list(T, Converter, Headers, lists:append(Accum, [erlang:apply(Converter, convert_single, [H])])).

@@ -2,11 +2,11 @@
 %%% @author a.d.nikiforov@gmail.com
 %%% @copyright (C) 2014
 %%% @doc
-%%% Converts actions list data
+%%% Converts domains list data
 %%% @end
 %%% Created : 05. дек 2014 12:16
 %%%-------------------------------------------------------------------
--module(actions_list_converter).
+-module(domains_list_converter).
 -author("a.d.nikiforov@gmail.com").
 
 -include("api_objects.hrl").
@@ -15,35 +15,25 @@
 -export([convert/2, convert_single/1, convert_list/2]).
 
 convert(Data, Headers) ->
-  [{actions, Actions},
+  [{domains, Domains},
     {links, [_Links]},
     %% {last, _LastLink},
     %% {next, _NextLink}
     {meta, [{total, _TotalItems}]}] = converter_utils:decode(Data),
-  converter_utils:convert_list(Actions, actions_list_converter, Headers).
+  converter_utils:convert_list(Domains, domains_list_converter, Headers).
 
-convert_list(Actions, Headers) ->
-  #actions_list{
-    actions = Actions,
+convert_list(Domains, Headers) ->
+  #domains_list{
+    domains = Domains,
     limits = converter_utils:parse_limits(Headers)
   }.
 
 convert_single(Data) ->
-  [{id, Id},
-    {status, Status},
-    {type, Type},
-    {started_at, StartedAt},
-    {completed_at, CompletedAt},
-    {resource_id, ResourceId},
-    {resource_type, ResourceType},
-    {region, Region}] = Data,
-  #action{
-    id = Id,
-    status = Status,
-    type = Type,
-    started_at = StartedAt,
-    completed_at = CompletedAt,
-    resource_id = ResourceId,
-    resource_type = ResourceType,
-    region = Region
+  [{name, Name},
+    {ttl, TTL},
+    {zone_file, ZoneFile}] = Data,
+  #domain{
+    name = Name,
+    ttl = TTL,
+    zone_file = ZoneFile
   }.

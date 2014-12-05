@@ -12,7 +12,7 @@
 -include("internal_resources.hrl").
 
 %% API
--export([make_request/2, render_api_action/2]).
+-export([make_request/2, render_api_action/2, get_per_page/1]).
 
 %% Build request headers - Content-Type and Auth header using get_token/0
 -spec build_headers() -> list().
@@ -75,4 +75,10 @@ any_to_string(Value) ->
     Value when is_integer(Value) -> integer_to_list(Value);
     Value when is_atom(Value) -> atom_to_list(Value);
     Value -> Value
+  end.
+
+get_per_page(PerPage) ->
+  case PerPage of
+    PerPage when PerPage > 25 -> ?MAX_PER_PAGE;
+    PerPage -> PerPage
   end.

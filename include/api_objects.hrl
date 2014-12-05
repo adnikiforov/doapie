@@ -8,7 +8,7 @@
 %%%-------------------------------------------------------------------
 -author("a.d.nikiforov@gmail.com").
 
--export_type([account/0, action/0, actions_list/0]).
+-export_type([account/0, action/0, actions_list/0, domain/0, domains_list/0]).
 -export_type([limits/0, error/0]).
 
 -record(limits, {
@@ -51,3 +51,17 @@
   limits :: limits()
 }).
 -type actions_list() :: #actions_list{}.
+
+-record(domain, {
+  name :: nonempty_string(),
+  ttl :: non_neg_integer(),
+  zone_file :: nonempty_string(),
+  limits :: limits()
+}).
+-type domain() :: #domain{}.
+
+-record(domains_list, {
+  domains :: list(domain()),
+  limits :: limits()
+}).
+-type domains_list() :: #domains_list{}.

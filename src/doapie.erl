@@ -22,15 +22,22 @@ get_account() ->
 
 -spec get_actions_list(non_neg_integer(), non_neg_integer()) -> actions_list() | error() | 'error'.
 get_actions_list(Page, PerPage) ->
-  PerPageCount =
-    case PerPage of
-      PerPage when PerPage > 25 -> ?MAX_PER_PAGE;
-      PerPage -> PerPage
-    end,
-  ApiAction = doapie_util:render_api_action(?DO_ACTIONS_LIST, [{page, Page}, {per_page, PerPageCount}]),
+  ApiAction = doapie_util:render_api_action(?DO_ACTIONS_LIST,
+    [{page, Page}, {per_page, (doapie_util:get_per_page(PerPage))}]),
   doapie_util:make_request(ApiAction, actions_list_converter).
 
 -spec get_action(non_neg_integer()) -> action() | error() | 'error'.
 get_action(ActionId) ->
   ApiAction = doapie_util:render_api_action(?DO_ACTION, [{action_id, ActionId}]),
   doapie_util:make_request(ApiAction, action_converter).
+
+-spec get_domains_list(non_neg_integer(), non_neg_integer()) -> domains_list() | error() | 'error'.
+get_domains_list(Page, PerPage) ->
+  ApiAction = doapie_util:render_api_action(?DO_DOMAINS_LIST,
+    [{page, Page}, {per_page, (doapie_util:get_per_page(PerPage))}]),
+  doapie_util:make_request(ApiAction, domains_list_converter).
+
+-spec get_domain(non_neg_integer()) -> domain() | error() | 'error'.
+get_domain(DomainId) ->
+  ApiAction = doapie_util:render_api_action(?DO_DOMAIN, [{domain_id, DomainId}]),
+  doapie_util:make_request(ApiAction, domain_converter).
