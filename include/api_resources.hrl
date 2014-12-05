@@ -17,7 +17,9 @@
 
 %% Domains
 -define(DO_DOMAINS_LIST, {"https://api.digitalocean.com/v2/domains?page={PAGE}&per_page={PER_PAGE}", get, []}).
--define(DO_DOMAIN, "https://api.digitalocean.com/v2/domains/{DOMAIN_ID}").
+-define(DO_DOMAIN, {"https://api.digitalocean.com/v2/domains/{DOMAIN_ID}", get, []}).
+-define(DO_DOMAIN_CREATE, {"https://api.digitalocean.com/v2/domains", post, [name, ip_address]}).
+-define(DO_DOMAIN_DELETE, {"https://api.digitalocean.com/v2/domains/{DOMAIN_ID}", delete, []}).
 
 %% %% Domain records
 %% -define(DO_DOMAIN_RECORDS_LIST, "https://api.digitalocean.com/v2/domains/{DOMAIN_ID}/records").

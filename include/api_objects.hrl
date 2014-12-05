@@ -8,7 +8,7 @@
 %%%-------------------------------------------------------------------
 -author("a.d.nikiforov@gmail.com").
 
--export_type([account/0, action/0, actions_list/0, domain/0, domains_list/0]).
+-export_type([account/0, action/0, actions_list/0, domain/0, domains_list/0, maybe_error/1]).
 -export_type([limits/0, error/0]).
 
 -record(limits, {
@@ -23,6 +23,7 @@
   message :: string()
 }).
 -type error() :: #error{}.
+-type maybe_error(Object) :: Object | error() | 'error'.
 
 -record(account, {
   droplet_limit :: non_neg_integer(),

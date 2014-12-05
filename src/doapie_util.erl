@@ -40,7 +40,7 @@ make_request(ApiAction, Converter) ->
     [] ->
       Response = ibrowse:send_req(Url, build_headers(), Action);
     RequestData ->
-      Response = ibrowse:send_req(Url, build_headers(), Action, RequestData)
+      Response = ibrowse:send_req(Url, build_headers(), Action, jsx:encode(encode_data(RequestData)))
   end,
   case Response of
     {ok, Code, Headers, Body} ->
@@ -77,8 +77,27 @@ any_to_string(Value) ->
     Value -> Value
   end.
 
+-spec any_to_atom(integer() | atom() | string()) -> atom().
+any_to_atom(Value) ->
+  case Value of
+    Value when is_integer(Value) -> list_to_atom(integer_to_list(Value));
+    Value when is_list(Value) -> list_to_atom(Value);
+    Value -> Value
+  end.
+
 get_per_page(PerPage) ->
   case PerPage of
     PerPage when PerPage > 25 -> ?MAX_PER_PAGE;
     PerPage -> PerPage
   end.
+
+encode_data(Data) when Data == [] ->
+  Data;
+encode_data(Data) ->
+  encode_data(Data, []).
+
+encode_data(Data, Accum) when Data == [] ->
+  Accum;
+encode_data([H | T], Accum) ->
+  {Key, Value} = H,
+  encode_data(T, Accum ++ [{any_to_atom(Key), any_to_atom(Value)}]).
