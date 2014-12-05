@@ -38,8 +38,8 @@
   id :: non_neg_integer(),
   status :: nonempty_string(),
   type :: nonempty_string(),
-  started_at :: nonempty_string(), %% TODO datetime type
-  completed_at :: nonempty_string(), %% TODO datetime type
+  started_at :: calendar:datetime(),
+  completed_at :: calendar:datetime(),
   resource_id :: non_neg_integer(),
   resource_type :: nonempty_string(),
   region :: nonempty_string(),

@@ -41,8 +41,8 @@ convert_single(Data) ->
     id = Id,
     status = Status,
     type = Type,
-    started_at = StartedAt,
-    completed_at = CompletedAt,
+    started_at = iso8601:parse(StartedAt),
+    completed_at = iso8601:parse(CompletedAt),
     resource_id = ResourceId,
     resource_type = ResourceType,
     region = Region
